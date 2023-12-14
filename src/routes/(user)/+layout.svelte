@@ -1,30 +1,41 @@
 <script>
+	import { onMount } from 'svelte';
+	import { goto } from '$app/navigation';
 	import '../../app.css';
+
+	let userName = '';
+	let hospitalName = '';
+
+	onMount(() => {
+		const firstName = window.localStorage.getItem('firstName') || '';
+		const lastName = window.localStorage.getItem('lastName') || '';
+		const hospital = window.localStorage.getItem('hospitalName') || '';
+		const accessToken = window.localStorage.getItem('accessToken') || '';
+
+		if (firstName && lastName && hospital && accessToken) {
+			userName = firstName + ' ' + lastName;
+			hospitalName = hospital;
+		} else {
+			goto('/login');
+		}
+	});
 </script>
 
 <header>
-	<div class="logo">
+	<a href="/" class="logo">
 		<img src="/logo-full.svg" alt="Utano Logo" />
-	</div>
+	</a>
 	<div class="profile">
 		<div class="profile-picture"></div>
 		<div class="profile-information">
-			<p>Anesu Kafesu</p>
-			<p>Parirenyatwa Hospital</p>
+			<p>{userName}</p>
+			<p>{hospitalName}</p>
 		</div>
 	</div>
 </header>
 <main>
 	<slot />
 </main>
-
-<footer>
-	<ul>
-		<li>About</li>
-		<li>Privacy Policy</li>
-		<li>Contact Support</li>
-	</ul>
-</footer>
 
 <style>
 	header {
@@ -41,24 +52,10 @@
 	}
 
 	main {
-		height: calc(100% - 100px);
-	}
-
-	footer {
-		height: 30px;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-	}
-
-	footer ul {
-		font-size: 0.7rem;
-		color: rgb(57, 57, 57);
-		list-style-type: none;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		gap: 10px;
+		height: fit-content;
+		min-height: calc(100% - 70px);
+		background-color: rgb(241, 241, 241);
+		padding: 20px;
 	}
 
 	.profile {

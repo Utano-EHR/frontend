@@ -1,5 +1,9 @@
 <script>
 	export let title = '';
+	export let primaryAction = {
+		text: '',
+		action: () => {}
+	};
 	let open = false;
 
 	function toggleOpen() {
@@ -22,6 +26,9 @@
 	<div class="content">
 		<slot />
 	</div>
+	<div class="button-row">
+		<button on:click={primaryAction.action}>{primaryAction.text}</button>
+	</div>
 </details>
 
 <style>
@@ -40,11 +47,25 @@
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
+		font-weight: bold;
 	}
 
 	details {
-		background-color: #d9d9d9;
+		background-color: #ffffff;
 		border-radius: 10px;
 		padding: 20px 30px;
+	}
+
+	button {
+		padding: 10px 20px;
+		border-radius: 5px;
+		background-color: #272727;
+		color: white;
+		border: none;
+	}
+
+	.button-row {
+		display: flex;
+		justify-content: end;
 	}
 </style>

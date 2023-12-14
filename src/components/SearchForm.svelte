@@ -1,48 +1,26 @@
 <script>
-	/**
-	 * @param {{ preventDefault: () => void; }} e
-	 */
-	async function onSubmit(e) {
-		e.preventDefault();
-		fetch('');
+	import Form from './utilities/Form.svelte';
+	import SubmitInput from './utilities/SubmitInput.svelte';
+	import TextInput from './utilities/TextInput.svelte';
+	import Link from './utilities/Link.svelte';
+	import { goto } from '$app/navigation';
+	let id = '';
+
+	async function handleSubmit() {
+		goto('/patient/' + id);
 	}
 </script>
 
-<form on:submit={onSubmit}>
-	<input type="text" placeholder="Patient ID" />
-	<input type="submit" value="Search" />
-</form>
+<Form onSubmit={handleSubmit}>
+	<TextInput
+		type="text"
+		placeholder="Enter the patient's Utano ID"
+		bind:value={id}
+		label="Patient ID"
+	/>
+	<SubmitInput value="Search" />
+	<Link to="patient/new">Create New Patient →</Link>
+</Form>
 
 <style>
-	form {
-		width: 500px;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		gap: 10px;
-	}
-
-	input[type='text'] {
-		padding: 10px 15px;
-		background-color: #f3f3f3;
-		border: 1px solid #aeaeae;
-		width: 400px;
-		border-radius: 10px;
-		outline: none;
-		font-size: 0.9rem;
-	}
-
-	input[type='text']:focus {
-		border: 1px solid orange;
-	}
-
-	input[type='submit'] {
-		padding: 10px 30px;
-		background-color: #272727;
-		color: #f5f5f5;
-		border: none;
-		border-radius: 7px;
-		cursor: pointer;
-		font-size: 0.9rem;
-	}
 </style>

@@ -1,68 +1,61 @@
-<form>
-	<h1>Log In</h1>
+<script>
+	import SubmitInput from '../../../components/utilities/SubmitInput.svelte';
+	import TextInput from '../../../components/utilities/TextInput.svelte';
+	import Form from '../../../components/utilities/Form.svelte';
+	import { api } from '../../../services/api';
+	import { goto } from '$app/navigation';
+	import Link from '../../../components/utilities/Link.svelte';
+	import Container from '../../../components/utilities/Container.svelte';
 
-	<div>
-		<label for="email">Email</label>
-		<input id="email" type="email" placeholder="Enter your email" />
-	</div>
+	let email = '';
+	let password = '';
 
-	<div>
-		<label for="password">Password</label>
-		<input id="password" type="password" placeholder="Enter your password" />
-	</div>
+	async function handleSubmit() {
+		const response = await api.login({ email, password });
 
-	<input type="submit" value="Login" />
+		console.log(response);
 
-	<div class="forgot-password">
-		<a href="/forgot">Forgot Password →</a>
-		<a href="/signup">Sign up →</a>
-	</div>
-</form>
+		// Store user information
+		window.localStorage.setItem('firstName', response.user.firstname);
+		window.localStorage.setItem('lastName', response.user.lastname);
+		window.localStorage.setItem('hospitalId', response.user.hospital.id);
+		window.localStorage.setItem('hospitalName', response.user.hospital.name);
+		window.localStorage.setItem('accessToken', response.access_token);
+		window.localStorage.setItem('userRoleId', response.user.role_id);
+		window.localStorage.setItem('userId', response.user.id);
+
+		// Redirect to login page
+		goto('/');
+	}
+</script>
+
+<Container heading="Log in">
+	<Form onSubmit={handleSubmit}>
+		<TextInput
+			label="Email"
+			placeholder="Enter your email"
+			id="email"
+			type="email"
+			bind:value={email}
+		/>
+		<TextInput
+			label="Password"
+			placeholder="Enter your password"
+			id="password"
+			type="password"
+			bind:value={password}
+		/>
+		<SubmitInput value="Log in" />
+		<div class="forgot-password">
+			<Link to="/forgot">Forgot Password →</Link>
+			<Link to="/register">Register →</Link>
+		</div>
+	</Form>
+</Container>
 
 <style>
-	form {
-		display: flex;
-		flex-direction: column;
-		gap: 20px;
-		padding: 20px 0px;
-		color: #272727;
-	}
-
-	label {
-		color: rgb(71, 71, 71);
-		font-size: 13px;
-	}
-
-	h1 {
-		font-size: 1.5rem;
-	}
-
-	div {
-		display: flex;
-		flex-direction: column;
-		gap: 5px;
-	}
-
-	input {
-		padding: 10px 20px;
-		border: 1px solid rgb(232, 232, 232);
-		border-radius: 5px;
-	}
-
-	input[type='submit'] {
-		background-color: #272727;
-		border: none;
-		color: white;
-		cursor: pointer;
-	}
-
 	.forgot-password {
 		display: flex;
 		justify-content: space-between;
-	}
-
-	a {
-		text-decoration: none;
-		color: #00bfbf;
 	}
 </style>

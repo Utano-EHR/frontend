@@ -1,23 +1,16 @@
 <script>
-	import { createEventDispatcher } from 'svelte';
-
-	const dispatch = createEventDispatcher();
-
 	export let type = 'text';
 	export let placeholder = '';
 	export let label = '';
 	export let id = '';
+	export let value = '';
 
 	/**
 	 * @param {Event} e
 	 */
 	function onChange(e) {
 		// @ts-ignore
-		const value = e.target.value;
-
-		dispatch('change', {
-			value
-		});
+		value = e.target.value;
 	}
 </script>
 
@@ -31,6 +24,10 @@
 		padding: 10px 20px;
 		border: 1px solid rgb(232, 232, 232);
 		border-radius: 5px;
+	}
+
+	input:focus {
+		outline: 2px solid orange;
 	}
 
 	div {
